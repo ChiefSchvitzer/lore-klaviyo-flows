@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lore Bathing Club — Klaviyo Email Flow Map</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: #f4efec; color: #232323; padding: 40px 20px; }
+  h1 { font-size: 32px; font-weight: 500; letter-spacing: -0.02em; text-transform: uppercase; margin-bottom: 8px; }
+  .subtitle { font-size: 13px; color: #888; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 48px; }
+  .section-label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #ED6F2B; margin-bottom: 24px; display: flex; align-items: center; gap: 8px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: rgba(237,111,43,0.3); }
+  .flow-group { margin-bottom: 56px; }
+  .flow { background: #fff; border: 1px solid rgba(35,35,35,0.08); margin-bottom: 32px; }
+  .flow-header { padding: 20px 24px 16px; border-bottom: 1px solid rgba(35,35,35,0.06); display: flex; justify-content: space-between; align-items: flex-start; }
+  .flow-name { font-size: 20px; font-weight: 500; letter-spacing: -0.01em; }
+  .flow-tag { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; padding: 4px 10px; border: 1px solid; border-radius: 2px; white-space: nowrap; }
+  .tag-revenue { color: #ED6F2B; border-color: #ED6F2B; }
+  .tag-retention { color: #5B7F6E; border-color: #5B7F6E; }
+  .tag-nurture { color: #6B5B8A; border-color: #6B5B8A; }
+  .flow-meta { padding: 12px 24px; background: #faf8f6; font-size: 12px; color: #666; display: flex; gap: 32px; flex-wrap: wrap; border-bottom: 1px solid rgba(35,35,35,0.06); }
+  .flow-meta span { display: flex; align-items: center; gap: 6px; }
+  .flow-meta .label { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: #aaa; }
+  .flow-body { padding: 24px; }
+  .flow-diagram { display: flex; flex-direction: column; gap: 0; }
+  .flow-step { display: flex; align-items: stretch; gap: 16px; }
+  .step-rail { display: flex; flex-direction: column; align-items: center; width: 40px; flex-shrink: 0; }
+  .step-dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid #232323; background: #fff; flex-shrink: 0; position: relative; z-index: 1; }
+  .step-dot.trigger { background: #ED6F2B; border-color: #ED6F2B; }
+  .step-dot.email { background: #232323; }
+  .step-dot.delay { background: #fff; border-color: #ccc; width: 8px; height: 8px; margin: 2px; }
+  .step-dot.split { background: #fff; border-color: #5B7F6E; border-width: 2px; transform: rotate(45deg); border-radius: 2px; width: 10px; height: 10px; margin: 1px; }
+  .step-line { flex: 1; width: 2px; background: rgba(35,35,35,0.12); min-height: 8px; }
+  .step-content { padding: 4px 0 20px; flex: 1; }
+  .step-type { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: #aaa; margin-bottom: 2px; }
+  .step-title { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+  .step-detail { font-size: 12px; color: #888; line-height: 1.5; }
+  .step-subject { font-size: 12px; color: #555; font-style: italic; margin-top: 4px; }
+  .segment-badge { display: inline-block; font-size: 10px; letter-spacing: 0.08em; padding: 3px 8px; background: rgba(35,35,35,0.06); border-radius: 2px; margin-right: 6px; margin-bottom: 4px; }
+  .branch-container { margin-left: 56px; padding: 12px 0 8px; }
+  .branch { padding: 8px 16px; margin-bottom: 8px; border-left: 3px solid; font-size: 12px; }
+  .branch-yes { border-color: #5B7F6E; background: rgba(91,127,110,0.06); }
+  .branch-no { border-color: #c0392b; background: rgba(192,57,43,0.06); }
+  .branch .label { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: #888; }
+  .legend { display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 48px; padding: 16px 20px; background: #fff; border: 1px solid rgba(35,35,35,0.08); font-size: 11px; color: #666; }
+  .legend-item { display: flex; align-items: center; gap: 8px; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; border: 2px solid; flex-shrink: 0; }
+  .email-count { font-size: 11px; color: #ED6F2B; font-weight: 500; }
+  @media (max-width: 600px) {
+    body { padding: 24px 12px; }
+    .flow-header { flex-direction: column; gap: 8px; }
+    .flow-meta { flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Lore Bathing Club</h1>
+<p class="subtitle">Klaviyo Email Flow Architecture — Expanded</p>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#ED6F2B;border-color:#ED6F2B;"></div> Trigger</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#232323;border-color:#232323;"></div> Email</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#fff;border-color:#ccc;width:8px;height:8px;"></div> Time Delay</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#fff;border-color:#5B7F6E;border-radius:2px;transform:rotate(45deg);width:9px;height:9px;"></div> Conditional Split</div>
+  <div class="legend-item"><span class="email-count">40 total emails across 8 flows</span></div>
+</div>
+
+<!-- ==================== REVENUE FLOWS ==================== -->
+<div class="flow-group">
+  <div class="section-label">Revenue Flows</div>
+
+  <!-- FLOW 1: Welcome Series -->
+  <div class="flow">
+    <div class="flow-header">
+      <div class="flow-name">Welcome Series</div>
+      <div class="flow-tag tag-revenue">Revenue</div>
+    </div>
+    <div class="flow-meta">
+      <span><span class="label">Segment</span> <span class="segment-badge">New Email Subscribers</span></span>
+      <span><span class="label">Trigger</span> Added to Email List</span>
+      <span><span class="label">Duration</span> 8 days · 5 emails</span>
+      <span><span class="label">Goal</span> Book first $55 session</span>
+    </div>
+    <div class="flow-body">
+      <div class="flow-diagram">
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot trigger"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Trigger</div>
+            <div class="step-title">Added to Email List</div>
+            <div class="step-detail">Popup signup or site form submission</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 1 · Immediate</div>
+            <div class="step-title">Welcome to Lore — Book Your First Session</div>
+            <div class="step-subject">Subject: "The water is warm. Come in."</div>
+            <div class="step-detail">Introduce the bathing club — what we are, where we are (676 Broadway, NoHo), 75-minute thermal circuit. Hero image of the space. Immediately present the offer: first session $55, HSA/FSA eligible. Primary "Book Now" CTA above the fold. Set the tone that this is something you do, not just read about.</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot delay"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Wait</div>
+            <div class="step-title">2 days</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 2 · Day 1</div>
+            <div class="step-title">What Happens in 75 Minutes</div>
+            <div class="step-subject">Subject: "Finnish sauna → cold plunge → you, transformed."</div>
+            <div class="step-detail">Walk through the circuit — Finnish sauna → infrared sauna → cold plunge → rest. Set expectations: what to bring, how long it takes, the feeling after. Overcome first-timer hesitation. End with "Book Now — $55" CTA. Lifestyle imagery throughout.</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot delay"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Wait</div>
+            <div class="step-title">1 day</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot split"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Conditional Split</div>
+            <div class="step-title">Has booked a session?</div>
+          </div>
+        </div>
+
+        <div class="branch-container">
+          <div class="branch branch-yes"><span class="label">Yes →</span> Exit flow (enter Post-Session Upsell)</div>
+          <div class="branch branch-no"><span class="label">No →</span> Continue</div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 3 · Day 2</div>
+            <div class="step-title">Your Body Will Thank You</div>
+            <div class="step-subject">Subject: "Why your body craves contrast."</div>
+            <div class="step-detail">Evidence-based benefits — circulation, inflammation, sleep, stress recovery. Cite studies briefly but keep it accessible. HSA/FSA eligible (position $55 as a health investment, not a splurge). "Book Now" CTA.</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot delay"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Wait</div>
+            <div class="step-title">2 days</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 4 · Day 4</div>
+            <div class="step-title">Don't Take Our Word for It</div>
+            <div class="step-subject">Subject: "What people say after their first bath."</div>
+            <div class="step-detail">Social proof — Google/GBP reviews, press quotes (NYT, T Magazine, Wallpaper), Instagram mentions. Let others make the case. "Book Your First Session — $55" CTA.</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot delay"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Wait</div>
+            <div class="step-title">4 days</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line" style="min-height:0;"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 5 · Day 8</div>
+            <div class="step-title">Save with the 3-Pack</div>
+            <div class="step-subject">Subject: "Commit to the practice — $149 for 3 sessions"</div>
+            <div class="step-detail">Final push with a value angle. If $55 didn't convert, offer the 3-pack at $149 (saves $16). Position bathing as a practice, not a one-off. Bring a guest for $35. Two CTAs: "Book Single — $55" and "Get the 3-Pack — $149." Cool off if no engagement.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOW 2: Post-Session Upsell -->
+  <div class="flow">
+    <div class="flow-header">
+      <div class="flow-name">Post-Session Upsell</div>
+      <div class="flow-tag tag-revenue">Revenue</div>
+    </div>
+    <div class="flow-meta">
+      <span><span class="label">Segment</span> <span class="segment-badge">Single Session Buyers</span></span>
+      <span><span class="label">Trigger</span> First session completed</span>
+      <span><span class="label">Duration</span> 14 days · 5 emails</span>
+      <span><span class="label">Goal</span> Upsell to 3-pack or waitlist</span>
+    </div>
+    <div class="flow-body">
+      <div class="flow-diagram">
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot trigger"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Trigger</div>
+            <div class="step-title">First Session Completed</div>
+            <div class="step-detail">Arketa event: session attended (first time)</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot delay"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Wait</div>
+            <div class="step-title">1 day</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 1 · Day 1</div>
+            <div class="step-title">How Was Your First Bath?</div>
+            <div class="step-subject">Subject: "How are you feeling?"</div>
+            <div class="step-detail">Post-experience check-in. Acknowledge what they just did. Brief mention of the science behind hot/cold contrast. Invite them to share on Instagram and tag @lorebathingclub. No hard sell.</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot delay"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Wait</div>
+            <div class="step-title">2 days</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 2 · Day 3</div>
+            <div class="step-title">The Bathing Practice</div>
+            <div class="step-subject">Subject: "Bathing is better as a practice."</div>
+            <div class="step-detail">Position thermal bathing as something you do regularly, not a one-off treat. Talk about what changes after 3, 5, 10 sessions — sleep, skin, stress. Content-driven, no hard sell yet.</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot delay"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Wait</div>
+            <div class="step-title">2 days</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 3 · Day 5</div>
+            <div class="step-title">The 3-Pack</div>
+            <div class="step-subject">Subject: "Three sessions, one price — $149"</div>
+            <div class="step-detail">Introduce the 3 Session Pack ($149 — saves vs 3 singles at $165). Highlight flexibility: use them on your schedule, bring a guest for $35. Clear purchase CTA.</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot delay"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Wait</div>
+            <div class="step-title">4 days</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot split"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Conditional Split</div>
+            <div class="step-title">Has purchased 3-pack?</div>
+          </div>
+        </div>
+
+        <div class="branch-container">
+          <div class="branch branch-yes"><span class="label">Yes →</span> Exit flow (enter 3-Pack Purchased flow)</div>
+          <div class="branch branch-no"><span class="label">No →</span> Continue</div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 4 · Day 9</div>
+            <div class="step-title">Bring a Friend</div>
+            <div class="step-subject">Subject: "Bathing is better together."</div>
+            <div class="step-detail">Social angle — invite a friend as a guest for $35. Talk about the shared experience. Couples, friends, teammates. Link to book with guest pass option. Lifestyle imagery of pairs in the space.</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot delay"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Wait</div>
+            <div class="step-title">5 days</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line" style="min-height:0;"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 5 · Day 14</div>
+            <div class="step-title">Join the Membership Waitlist</div>
+            <div class="step-subject">Subject: "For serious bathers."</div>
+            <div class="step-detail">Tease membership benefits — priority booking, guest passes, monthly credits, partner perks (ON Running, Humanrace, Furtuna Skin). Waitlist CTA linking to /membership. Aspirational but accessible.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOW 3: 3-Pack Purchased -->
+  <div class="flow">
+    <div class="flow-header">
+      <div class="flow-name">3-Pack Purchased</div>
+      <div class="flow-tag tag-revenue">Revenue</div>
+    </div>
+    <div class="flow-meta">
+      <span><span class="label">Segment</span> <span class="segment-badge">3-Pack Holders</span></span>
+      <span><span class="label">Trigger</span> Purchased 3 Session Pack</span>
+      <span><span class="label">Duration</span> Lifecycle · 5 emails</span>
+      <span><span class="label">Goal</span> Use sessions → repurchase → upgrade</span>
+    </div>
+    <div class="flow-body">
+      <div class="flow-diagram">
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot trigger"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Trigger</div>
+            <div class="step-title">3 Session Pack Purchased</div>
+            <div class="step-detail">Arketa event: pack purchase (3-session)</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 1 · Immediate</div>
+            <div class="step-title">Your 3-Pack Is Ready</div>
+            <div class="step-subject">Subject: "Three sessions. Your pace."</div>
+            <div class="step-detail">Confirm their purchase. Direct link to book their next session. Reminder of hours (Mon-Fri 7am-11pm, Sat-Sun 8am-11pm). Mention they can bring a guest for $35.</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot delay"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Wait</div>
+            <div class="step-title">5 days</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot split"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Conditional Split</div>
+            <div class="step-title">Has booked first session?</div>
+          </div>
+        </div>
+
+        <div class="branch-container">
+          <div class="branch branch-yes"><span class="label">Yes →</span> Skip to Email 3</div>
+          <div class="branch branch-no"><span class="label">No →</span> Send Email 2</div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 2 · Day 5</div>
+            <div class="step-title">Don't Forget to Book</div>
+            <div class="step-subject">Subject: "You have 3 sessions waiting."</div>
+            <div class="step-detail">Gentle nudge to book their first session. Show available time slots or best times to come (weekday mornings are quietest). Direct booking CTA.</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot delay"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Wait until</div>
+            <div class="step-title">First session attended</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 3 · After 1st session</div>
+            <div class="step-title">Two Left — Keep the Rhythm</div>
+            <div class="step-subject">Subject: "Two more to go."</div>
+            <div class="step-detail">Acknowledge their session. Encourage booking the next one within a week to build the habit. Mention partner products available in the lounge (La Cabra coffee, Herbivore skincare). Book CTA.</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot delay"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Wait until</div>
+            <div class="step-title">Second session attended (1 credit remaining)</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 4 · After 2nd session</div>
+            <div class="step-title">One Session Left</div>
+            <div class="step-subject">Subject: "One left — make it count."</div>
+            <div class="step-detail">Friendly nudge that they have 1 credit remaining. Upsell to another 3-pack or 10-pack. Two CTAs: "Book Last Session" and "Get Another Pack."</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot delay"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Wait until</div>
+            <div class="step-title">Final session attended (0 credits)</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line" style="min-height:0;"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 5 · After final session</div>
+            <div class="step-title">What's Next?</div>
+            <div class="step-subject">Subject: "You finished your 3-pack."</div>
+            <div class="step-detail">Celebrate completing all 3. Three CTAs: another 3-pack ($149), upgrade to 10-pack, or join the membership waitlist. Position membership as the natural next step for regulars.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOW 4: Browse Abandonment -->
+  <div class="flow">
+    <div class="flow-header">
+      <div class="flow-name">Browse Abandonment</div>
+      <div class="flow-tag tag-revenue">Revenue</div>
+    </div>
+    <div class="flow-meta">
+      <span><span class="label">Segment</span> <span class="segment-badge">Browsed /book but didn't purchase</span></span>
+      <span><span class="label">Trigger</span> Viewed booking page, no purchase in 1hr</span>
+      <span><span class="label">Duration</span> 5 days · 5 emails</span>
+      <span><span class="label">Goal</span> Complete booking</span>
+    </div>
+    <div class="flow-body">
+      <div class="flow-diagram">
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot trigger"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Trigger</div>
+            <div class="step-title">Viewed /book page</div>
+            <div class="step-detail">Klaviyo Active on Site tracking — identified visitor viewed booking page but did not complete purchase within 1 hour</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot delay"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Wait</div>
+            <div class="step-title">1 hour</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 1 · 1 hour</div>
+            <div class="step-title">Still Thinking About It?</div>
+            <div class="step-subject">Subject: "Your session is waiting."</div>
+            <div class="step-detail">Light, non-pushy. Acknowledge they were looking. Reiterate what a session includes (75 min, sauna + cold plunge). Single "Book Now" CTA. Mention HSA/FSA eligible.</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot delay"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Wait</div>
+            <div class="step-title">23 hours</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot split"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Conditional Split</div>
+            <div class="step-title">Has purchased?</div>
+          </div>
+        </div>
+
+        <div class="branch-container">
+          <div class="branch branch-yes"><span class="label">Yes →</span> Exit flow</div>
+          <div class="branch branch-no"><span class="label">No →</span> Continue</div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 2 · Day 1</div>
+            <div class="step-title">What to Expect at Lore</div>
+            <div class="step-subject">Subject: "First time? Here's what happens."</div>
+            <div class="step-detail">Educational angle to overcome hesitation. Walk through arrival → changing → circuit → afterglow. Address common concerns (what to wear, skill level, time commitment). "Book Now" CTA.</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot delay"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Wait</div>
+            <div class="step-title">1 day</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 3 · Day 2</div>
+            <div class="step-title">Why People Come Back</div>
+            <div class="step-subject">Subject: "They came once. Then again. And again."</div>
+            <div class="step-detail">Social proof angle — Google reviews, press quotes, repeat visitor stats. Show that most people who try it once come back. "Book Now" CTA.</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot delay"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Wait</div>
+            <div class="step-title">1 day</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 4 · Day 3</div>
+            <div class="step-title">HSA/FSA Eligible</div>
+            <div class="step-subject">Subject: "Use your health benefits."</div>
+            <div class="step-detail">Many people don't realize thermal bathing qualifies for HSA/FSA. Explain how it works. Position the $55 session as essentially free if they have benefits. "Book with HSA/FSA" CTA.</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot delay"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Wait</div>
+            <div class="step-title">2 days</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line" style="min-height:0;"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 5 · Day 5</div>
+            <div class="step-title">Save with the 3-Pack</div>
+            <div class="step-subject">Subject: "Commit to the practice — $149"</div>
+            <div class="step-detail">Final push. If a single session didn't convert them, offer the 3-pack value proposition ($149 vs $165 for 3 singles). "If you're going to try it, try it properly." Last CTA before cooloff.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== RETENTION FLOWS ==================== -->
+<div class="flow-group">
+  <div class="section-label">Retention Flows</div>
+
+  <!-- FLOW 5: Credits Exhausted Win-back -->
+  <div class="flow">
+    <div class="flow-header">
+      <div class="flow-name">Credits Exhausted Win-back</div>
+      <div class="flow-tag tag-retention">Retention</div>
+    </div>
+    <div class="flow-meta">
+      <span><span class="label">Segment</span> <span class="segment-badge">Used All Sessions</span> <span class="segment-badge">No Purchase in 14 Days</span></span>
+      <span><span class="label">Trigger</span> All credits used + 14 days inactive</span>
+      <span><span class="label">Duration</span> 45 days · 5 emails</span>
+      <span><span class="label">Goal</span> Rebook or upgrade</span>
+    </div>
+    <div class="flow-body">
+      <div class="flow-diagram">
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot trigger"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Trigger</div>
+            <div class="step-title">All Credits Used + 14 Days No Purchase</div>
+            <div class="step-detail">Segment-triggered: quantity_remaining = 0, no new purchase in 14 days</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 1 · Day 14</div>
+            <div class="step-title">We Miss You at the Club</div>
+            <div class="step-subject">Subject: "It's been a while."</div>
+            <div class="step-detail">Warm, not desperate. Acknowledge their last visit. Remind them how they felt after. Simple "Book a Session" CTA at $55.</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot delay"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Wait</div>
+            <div class="step-title">5 days</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 2 · Day 19</div>
+            <div class="step-title">What's New at Lore</div>
+            <div class="step-subject">Subject: "A few things have changed."</div>
+            <div class="step-detail">Share what's new — new partners, seasonal amenities, events, updated hours. Give them a reason to come back beyond just habit. "Book a Session" CTA.</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot delay"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Wait</div>
+            <div class="step-title">5 days</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 3 · Day 24</div>
+            <div class="step-title">The 3-Pack Offer</div>
+            <div class="step-subject">Subject: "Come back for less."</div>
+            <div class="step-detail">Value push — 3 Session Pack at $149 (saves $16 vs singles). Emphasize making bathing a habit. Mention you can share sessions with a guest.</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot delay"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Wait</div>
+            <div class="step-title">7 days</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 4 · Day 31</div>
+            <div class="step-title">Bring Someone New</div>
+            <div class="step-subject">Subject: "Know someone who needs this?"</div>
+            <div class="step-detail">Referral/social angle — bring a friend for $35. Sometimes coming back is easier with company. Gift card option for someone who deserves it. "Book with Guest" and "Send a Gift Card" CTAs.</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot delay"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Wait</div>
+            <div class="step-title">14 days</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line" style="min-height:0;"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 5 · Day 45</div>
+            <div class="step-title">Last Call</div>
+            <div class="step-subject">Subject: "Before we go quiet."</div>
+            <div class="step-detail">Final touchpoint before sunsetting. Honest tone — "we don't want to fill your inbox." One last CTA to book. If they don't engage, suppress from future campaigns for 90 days.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOW 6: Canceled Member Win-back -->
+  <div class="flow">
+    <div class="flow-header">
+      <div class="flow-name">Canceled Member Win-back</div>
+      <div class="flow-tag tag-retention">Retention</div>
+    </div>
+    <div class="flow-meta">
+      <span><span class="label">Segment</span> <span class="segment-badge">Canceled Members</span></span>
+      <span><span class="label">Trigger</span> Membership canceled</span>
+      <span><span class="label">Duration</span> 75 days · 5 emails</span>
+      <span><span class="label">Goal</span> Win back as session buyer or rejoin waitlist</span>
+    </div>
+    <div class="flow-body">
+      <div class="flow-diagram">
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot trigger"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Trigger</div>
+            <div class="step-title">Membership Canceled</div>
+            <div class="step-detail">Arketa/Glofox event: subscription status changed to CANCELLED</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot delay"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Wait</div>
+            <div class="step-title">3 days</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 1 · Day 3</div>
+            <div class="step-title">We're Sorry to See You Go</div>
+            <div class="step-subject">Subject: "The door is always open."</div>
+            <div class="step-detail">Graceful, no guilt. Thank them for being a member. Let them know they can still book single sessions anytime. Optional: quick 1-question survey on why they canceled (link to Typeform or similar).</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot delay"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Wait</div>
+            <div class="step-title">11 days</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 2 · Day 14</div>
+            <div class="step-title">You Can Still Bathe</div>
+            <div class="step-subject">Subject: "No membership required."</div>
+            <div class="step-detail">Remind them that single sessions are always available at $55. No commitment, no strings. Position it as a low-pressure way to stay connected to the practice. "Book a Session" CTA.</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot delay"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Wait</div>
+            <div class="step-title">16 days</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 3 · Day 30</div>
+            <div class="step-title">What's New at the Club</div>
+            <div class="step-subject">Subject: "Miss the cold?"</div>
+            <div class="step-detail">Share what's changed since they left — new partners, events, seasonal offerings, amenities. Give them a fresh reason to visit. "Book a Session" CTA.</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot delay"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Wait</div>
+            <div class="step-title">20 days</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 4 · Day 50</div>
+            <div class="step-title">The 3-Pack — No Commitment</div>
+            <div class="step-subject">Subject: "Three sessions. No strings."</div>
+            <div class="step-detail">For former members who don't want to re-commit monthly but miss the practice. 3-pack at $149 is the middle ground. Use at your own pace. "Get the 3-Pack" CTA.</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot delay"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Wait</div>
+            <div class="step-title">25 days</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line" style="min-height:0;"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 5 · Day 75</div>
+            <div class="step-title">Memberships Are Evolving</div>
+            <div class="step-subject">Subject: "Things have changed."</div>
+            <div class="step-detail">Tease new membership structure or benefits. Invite to rejoin the waitlist. Position as "when you're ready." Final touchpoint — suppress after this if no engagement.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== NURTURE FLOWS ==================== -->
+<div class="flow-group">
+  <div class="section-label">Nurture Flows</div>
+
+  <!-- FLOW 7: Membership Waitlist -->
+  <div class="flow">
+    <div class="flow-header">
+      <div class="flow-name">Membership Waitlist Nurture</div>
+      <div class="flow-tag tag-nurture">Nurture</div>
+    </div>
+    <div class="flow-meta">
+      <span><span class="label">Segment</span> <span class="segment-badge">Membership Waitlist</span></span>
+      <span><span class="label">Trigger</span> Added to Membership Waitlist</span>
+      <span><span class="label">Duration</span> 21 days · 5 emails</span>
+      <span><span class="label">Goal</span> Keep warm until memberships open + drive session purchases</span>
+    </div>
+    <div class="flow-body">
+      <div class="flow-diagram">
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot trigger"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Trigger</div>
+            <div class="step-title">Added to Membership Waitlist</div>
+            <div class="step-detail">Joined via /membership page waitlist form</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 1 · Immediate</div>
+            <div class="step-title">You're on the List</div>
+            <div class="step-subject">Subject: "You're on the list."</div>
+            <div class="step-detail">Confirm they're on the waitlist. Preview what membership includes — monthly credits, priority booking, guest passes, partner perks (ON Running, Humanrace, etc). Set expectation on timing.</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot delay"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Wait</div>
+            <div class="step-title">4 days</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 2 · Day 4</div>
+            <div class="step-title">What Is Thermal Bathing?</div>
+            <div class="step-subject">Subject: "An ancient practice, reimagined."</div>
+            <div class="step-detail">For waitlisters who may not have visited yet. History and philosophy of bathing culture — Nordic, Japanese, Roman. How Lore brings this to NoHo. Educational and aspirational. Link to blog.</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot delay"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Wait</div>
+            <div class="step-title">4 days</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 3 · Day 8</div>
+            <div class="step-title">Life as a Member</div>
+            <div class="step-subject">Subject: "What members get."</div>
+            <div class="step-detail">Deep dive on member benefits. Monthly session credits, $35 guest passes, exclusive events, partner products in the lounge. Testimonial or quote from a current member if available.</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot delay"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Wait</div>
+            <div class="step-title">6 days</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 4 · Day 14</div>
+            <div class="step-title">Our Partners</div>
+            <div class="step-subject">Subject: "The company we keep."</div>
+            <div class="step-detail">Showcase brand partners — ON Running, Humanrace, Herbivore, Furtuna Skin, La Cabra, Arc'teryx, Loftie, Vivobarefoot. Members get exclusive access to partner events and products. Aspirational brand world.</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot delay"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Wait</div>
+            <div class="step-title">7 days</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line" style="min-height:0;"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 5 · Day 21</div>
+            <div class="step-title">Don't Wait — Try a Session</div>
+            <div class="step-subject">Subject: "Can't wait? Neither can we."</div>
+            <div class="step-detail">Bridge the gap while they wait for membership. Book a single session ($55) or 3-pack ($149) to experience the club now. "Book a Session" CTA. Reassure their waitlist spot is secure.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOW 8: Guest Welcome -->
+  <div class="flow">
+    <div class="flow-header">
+      <div class="flow-name">Guest Welcome</div>
+      <div class="flow-tag tag-nurture">Nurture</div>
+    </div>
+    <div class="flow-meta">
+      <span><span class="label">Segment</span> <span class="segment-badge">Guest Visitors ($35)</span></span>
+      <span><span class="label">Trigger</span> Attended as a guest</span>
+      <span><span class="label">Duration</span> 10 days · 5 emails</span>
+      <span><span class="label">Goal</span> Convert guest to own session buyer</span>
+    </div>
+    <div class="flow-body">
+      <div class="flow-diagram">
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot trigger"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Trigger</div>
+            <div class="step-title">Attended as Guest</div>
+            <div class="step-detail">Arketa event: guest pass used / guest session attended</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot delay"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Wait</div>
+            <div class="step-title">1 day</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 1 · Day 1</div>
+            <div class="step-title">Thanks for Visiting</div>
+            <div class="step-subject">Subject: "Welcome to the club."</div>
+            <div class="step-detail">Thank them for coming as a guest. Brief intro to Lore for someone who experienced it but may not know the full story. Mention they can follow @lorebathingclub. No hard sell yet.</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot delay"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Wait</div>
+            <div class="step-title">2 days</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 2 · Day 3</div>
+            <div class="step-title">The Science Behind the Bath</div>
+            <div class="step-subject">Subject: "Why you felt so good after."</div>
+            <div class="step-detail">They've experienced it — now explain why. Dopamine, norepinephrine, circulation, vagus nerve activation. Connect the feeling to the science. Content-driven, builds authority.</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot delay"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Wait</div>
+            <div class="step-title">2 days</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 3 · Day 5</div>
+            <div class="step-title">Book Your Own Session</div>
+            <div class="step-subject">Subject: "Next time, on your terms."</div>
+            <div class="step-detail">Invite them to book their own session. Single at $55. "You don't need an invitation this time." Mention HSA/FSA eligible. Direct "Book Now" CTA to /book.</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot delay"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Wait</div>
+            <div class="step-title">2 days</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 4 · Day 7</div>
+            <div class="step-title">The 3-Pack</div>
+            <div class="step-subject">Subject: "Make it a practice — $149"</div>
+            <div class="step-detail">They liked it enough as a guest — now commit to a practice. 3 Session Pack at $149 saves vs 3 singles. Use on your own schedule. Bring your own guest for $35. Purchase CTA.</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot delay"></div><div class="step-line"></div></div>
+          <div class="step-content">
+            <div class="step-type">Wait</div>
+            <div class="step-title">3 days</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="step-rail"><div class="step-dot email"></div><div class="step-line" style="min-height:0;"></div></div>
+          <div class="step-content">
+            <div class="step-type">Email 5 · Day 10</div>
+            <div class="step-title">Gift a Session</div>
+            <div class="step-subject">Subject: "Know someone who needs this?"</div>
+            <div class="step-detail">If they're not ready to buy for themselves, maybe they know someone who'd love it. Gift card CTA linking to /gift-cards. Also a final soft "Book for Yourself" CTA. Closes the loop.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== CUSTOMER JOURNEY MAP ==================== -->
+<div class="flow-group">
+  <div class="section-label">Customer Journey — How Flows Connect</div>
+
+  <div class="flow">
+    <div class="flow-header">
+      <div class="flow-name">Journey Map</div>
+    </div>
+    <div class="flow-body" style="font-size:13px; line-height:2; color:#555;">
+      <div style="display:grid; grid-template-columns: 200px 1fr; gap: 8px 24px; align-items: start;">
+
+        <div style="font-weight:500;color:#232323;">Stranger</div>
+        <div>→ Signs up via popup or form → <strong>Welcome Series</strong> (5 emails, 8 days)</div>
+
+        <div style="font-weight:500;color:#232323;">First-time buyer</div>
+        <div>→ Books $55 session → Attends → <strong>Post-Session Upsell</strong> (5 emails, 14 days)</div>
+
+        <div style="font-weight:500;color:#232323;">3-Pack buyer</div>
+        <div>→ Purchases 3-pack → <strong>3-Pack Purchased</strong> (5 emails, lifecycle)</div>
+
+        <div style="font-weight:500;color:#232323;">Credits exhausted</div>
+        <div>→ No repurchase in 14 days → <strong>Credits Exhausted Win-back</strong> (5 emails, 45 days)</div>
+
+        <div style="font-weight:500;color:#232323;">Waitlist signup</div>
+        <div>→ Joins via /membership → <strong>Membership Waitlist Nurture</strong> (5 emails, 21 days)</div>
+
+        <div style="font-weight:500;color:#232323;">Guest visitor</div>
+        <div>→ Attends on someone's guest pass → <strong>Guest Welcome</strong> (5 emails, 10 days)</div>
+
+        <div style="font-weight:500;color:#232323;">Canceled member</div>
+        <div>→ Membership canceled → <strong>Canceled Member Win-back</strong> (5 emails, 75 days)</div>
+
+        <div style="font-weight:500;color:#232323;">Browse abandoner</div>
+        <div>→ Views /book but doesn't buy → <strong>Browse Abandonment</strong> (5 emails, 5 days)</div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div style="text-align:center; padding: 40px 0 20px; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #bbb;">
+  Lore Bathing Club · Klaviyo Flow Architecture · 40 Emails · May 2026
+</div>
+
+</body>
+</html>
